@@ -115,7 +115,17 @@
     </servlet>
 
 
-  <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
+    <servlet>
+        <servlet-name>SpringMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SpringMVC</servlet-name>
+        <url-pattern>/SpringMVC</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
   <!-- used by Tomcat to support JSP pages.  Traditionally, this servlet    -->
   <!-- is mapped to the URL pattern "*.jsp".  This servlet supports the     -->
   <!-- following initialization parameters (default values are in square    -->
