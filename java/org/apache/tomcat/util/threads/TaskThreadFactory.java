@@ -49,12 +49,10 @@ public class TaskThreadFactory implements ThreadFactory {
         try {
             // Threads should not be created by the webapp classloader
             if (Constants.IS_SECURITY_ENABLED) {
-                PrivilegedAction<Void> pa = new PrivilegedSetTccl(
-                        getClass().getClassLoader());
+                PrivilegedAction<Void> pa = new PrivilegedSetTccl(getClass().getClassLoader());
                 AccessController.doPrivileged(pa);
             } else {
-                Thread.currentThread().setContextClassLoader(
-                        getClass().getClassLoader());
+                Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
             }
             TaskThread t = new TaskThread(group, r, namePrefix + threadNumber.getAndIncrement());
             t.setDaemon(daemon);

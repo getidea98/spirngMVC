@@ -195,8 +195,7 @@ final class StandardWrapperValve
                     if (request.isAsyncDispatching()) {
                         request.getAsyncContextInternal().doInternalDispatch();
                     } else {
-                        filterChain.doFilter
-                            (request.getRequest(), response.getResponse());
+                        filterChain.doFilter(request.getRequest(), response.getResponse());
                     }
                 }
 
@@ -205,17 +204,11 @@ final class StandardWrapperValve
             throwable = e;
             exception(request, response, e);
         } catch (IOException e) {
-            container.getLogger().error(sm.getString(
-                    "standardWrapper.serviceException", wrapper.getName(),
-                    context.getName()), e);
+            container.getLogger().error(sm.getString("standardWrapper.serviceException", wrapper.getName(), context.getName()), e);
             throwable = e;
             exception(request, response, e);
         } catch (UnavailableException e) {
-            container.getLogger().error(sm.getString(
-                    "standardWrapper.serviceException", wrapper.getName(),
-                    context.getName()), e);
-            //            throwable = e;
-            //            exception(request, response, e);
+            container.getLogger().error(sm.getString("standardWrapper.serviceException", wrapper.getName(), context.getName()), e);
             wrapper.unavailable(e);
             long available = wrapper.getAvailable();
             if ((available > 0L) && (available < Long.MAX_VALUE)) {
@@ -233,18 +226,13 @@ final class StandardWrapperValve
         } catch (ServletException e) {
             Throwable rootCause = StandardWrapper.getRootCause(e);
             if (!(rootCause instanceof ClientAbortException)) {
-                container.getLogger().error(sm.getString(
-                        "standardWrapper.serviceExceptionRoot",
-                        wrapper.getName(), context.getName(), e.getMessage()),
-                        rootCause);
+                container.getLogger().error(sm.getString("standardWrapper.serviceExceptionRoot", wrapper.getName(), context.getName(), e.getMessage()), rootCause);
             }
             throwable = e;
             exception(request, response, e);
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            container.getLogger().error(sm.getString(
-                    "standardWrapper.serviceException", wrapper.getName(),
-                    context.getName()), e);
+            container.getLogger().error(sm.getString("standardWrapper.serviceException", wrapper.getName(), context.getName()), e);
             throwable = e;
             exception(request, response, e);
         }
@@ -261,8 +249,7 @@ final class StandardWrapperValve
             }
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            container.getLogger().error(sm.getString("standardWrapper.deallocateException",
-                             wrapper.getName()), e);
+            container.getLogger().error(sm.getString("standardWrapper.deallocateException", wrapper.getName()), e);
             if (throwable == null) {
                 throwable = e;
                 exception(request, response, e);
@@ -272,14 +259,12 @@ final class StandardWrapperValve
         // If this servlet has been marked permanently unavailable,
         // unload it and release this instance
         try {
-            if ((servlet != null) &&
-                (wrapper.getAvailable() == Long.MAX_VALUE)) {
+            if ((servlet != null) && (wrapper.getAvailable() == Long.MAX_VALUE)) {
                 wrapper.unload();
             }
         } catch (Throwable e) {
             ExceptionUtils.handleThrowable(e);
-            container.getLogger().error(sm.getString("standardWrapper.unloadException",
-                             wrapper.getName()), e);
+            container.getLogger().error(sm.getString("standardWrapper.unloadException", wrapper.getName()), e);
             if (throwable == null) {
                 throwable = e;
                 exception(request, response, e);

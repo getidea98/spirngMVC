@@ -58,8 +58,7 @@ import org.apache.tomcat.util.res.StringManager;
 public class DefaultInstanceManager implements InstanceManager {
 
     // Used when there are no annotations in a class
-    private static final AnnotationCacheEntry[] ANNOTATIONS_EMPTY
-        = new AnnotationCacheEntry[0];
+    private static final AnnotationCacheEntry[] ANNOTATIONS_EMPTY = new AnnotationCacheEntry[0];
 
     /**
      * The string manager for this package.
@@ -134,8 +133,7 @@ public class DefaultInstanceManager implements InstanceManager {
         newInstance(o, o.getClass());
     }
 
-    private Object newInstance(Object instance, Class<?> clazz)
-            throws IllegalAccessException, InvocationTargetException, NamingException {
+    private Object newInstance(Object instance, Class<?> clazz) throws IllegalAccessException, InvocationTargetException, NamingException {
         if (!ignoreAnnotations) {
             Map<String, String> injections = assembleInjectionsFromClassHierarchy(clazz);
             populateAnnotationsCache(clazz, injections);

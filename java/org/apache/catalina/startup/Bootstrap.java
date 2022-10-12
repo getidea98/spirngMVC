@@ -267,8 +267,7 @@ public final class Bootstrap {
         paramTypes[0] = Class.forName("java.lang.ClassLoader");
         Object paramValues[] = new Object[1];
         paramValues[0] = sharedLoader;
-        Method method =
-                startupInstance.getClass().getMethod(methodName, paramTypes);
+        Method method = startupInstance.getClass().getMethod(methodName, paramTypes);
         method.invoke(startupInstance, paramValues);
 
         catalinaDaemon = startupInstance;
@@ -337,8 +336,7 @@ public final class Bootstrap {
      *
      * @throws Exception Fatal start error
      */
-    public void start()
-            throws Exception {
+    public void start() throws Exception {
         if (catalinaDaemon == null) {
             init();
         }
@@ -494,8 +492,7 @@ public final class Bootstrap {
             }
         } catch (Throwable t) {
             // Unwrap the Exception for clearer error reporting
-            if (t instanceof InvocationTargetException &&
-                    t.getCause() != null) {
+            if (t instanceof InvocationTargetException && t.getCause() != null) {
                 t = t.getCause();
             }
             handleThrowable(t);

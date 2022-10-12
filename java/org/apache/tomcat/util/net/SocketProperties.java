@@ -200,18 +200,20 @@ public class SocketProperties {
     }
 
     public void setProperties(ServerSocket socket) throws SocketException{
-        if (rxBufSize != null)
+        if (rxBufSize != null) {
             socket.setReceiveBufferSize(rxBufSize.intValue());
-        if (performanceConnectionTime != null && performanceLatency != null &&
-                performanceBandwidth != null)
+        }
+        if (performanceConnectionTime != null && performanceLatency != null && performanceBandwidth != null)
             socket.setPerformancePreferences(
                     performanceConnectionTime.intValue(),
                     performanceLatency.intValue(),
                     performanceBandwidth.intValue());
-        if (soReuseAddress != null)
+        if (soReuseAddress != null) {
             socket.setReuseAddress(soReuseAddress.booleanValue());
-        if (soTimeout != null && soTimeout.intValue() >= 0)
+        }
+        if (soTimeout != null && soTimeout.intValue() >= 0) {
             socket.setSoTimeout(soTimeout.intValue());
+        }
     }
 
     public void setProperties(AsynchronousSocketChannel socket) throws IOException {

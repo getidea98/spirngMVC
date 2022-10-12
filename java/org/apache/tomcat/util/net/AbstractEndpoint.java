@@ -56,12 +56,12 @@ public abstract class AbstractEndpoint<S> {
 
     protected static final StringManager sm = StringManager.getManager(AbstractEndpoint.class);
 
-    public static interface Handler<S> {
+    public interface Handler<S> {
 
         /**
          * Different types of socket states to react upon.
          */
-        public enum SocketState {
+        enum SocketState {
             // TODO Add a new state to the AsyncStateMachine and remove
             //      ASYNC_END (if possible)
             OPEN, CLOSED, LONG, ASYNC_END, SENDFILE, UPGRADING, UPGRADED
@@ -76,8 +76,7 @@ public abstract class AbstractEndpoint<S> {
          *
          * @return The state of the socket after processing
          */
-        public SocketState process(SocketWrapperBase<S> socket,
-                SocketEvent status);
+        public SocketState process(SocketWrapperBase<S> socket, SocketEvent status);
 
 
         /**
@@ -365,11 +364,14 @@ public abstract class AbstractEndpoint<S> {
      * External Executor based thread pool.
      */
     private Executor executor = null;
+
     public void setExecutor(Executor executor) {
         this.executor = executor;
         this.internalExecutor = (executor == null);
     }
-    public Executor getExecutor() { return executor; }
+    public Executor getExecutor() {
+        return executor;
+    }
 
 
     /**
@@ -528,6 +530,7 @@ public abstract class AbstractEndpoint<S> {
      * Maximum amount of worker threads.
      */
     private int maxThreads = 200;
+
     public void setMaxThreads(int maxThreads) {
         this.maxThreads = maxThreads;
         Executor executor = this.executor;
@@ -552,6 +555,7 @@ public abstract class AbstractEndpoint<S> {
      * Priority of the worker threads.
      */
     protected int threadPriority = Thread.NORM_PRIORITY;
+
     public void setThreadPriority(int threadPriority) {
         // Can't change this once the executor has started
         this.threadPriority = threadPriority;
@@ -569,9 +573,11 @@ public abstract class AbstractEndpoint<S> {
      * Max keep alive requests
      */
     private int maxKeepAliveRequests=100; // as in Apache HTTPD server
+
     public int getMaxKeepAliveRequests() {
         return maxKeepAliveRequests;
     }
+
     public void setMaxKeepAliveRequests(int maxKeepAliveRequests) {
         this.maxKeepAliveRequests = maxKeepAliveRequests;
     }
@@ -581,18 +587,25 @@ public abstract class AbstractEndpoint<S> {
      * 100 by default. A value of less than 0 means no limit.
      */
     private int maxHeaderCount = 100; // as in Apache HTTPD server
+
     public int getMaxHeaderCount() {
         return maxHeaderCount;
     }
+
     public void setMaxHeaderCount(int maxHeaderCount) {
         this.maxHeaderCount = maxHeaderCount;
     }
+
 
     /**
      * Name of the thread pool, which will be used for naming child threads.
      */
     private String name = "TP";
-    public void setName(String name) { this.name = name; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() { return name; }
 
     /**
@@ -601,17 +614,21 @@ public abstract class AbstractEndpoint<S> {
      *  will not be daemon - and will keep the process alive.
      */
     private boolean daemon = true;
-    public void setDaemon(boolean b) { daemon = b; }
-    public boolean getDaemon() { return daemon; }
 
+    public void setDaemon(boolean b) {
+        daemon = b;
+    }
+
+    public boolean getDaemon() { return daemon; }
 
     protected abstract boolean getDeferAccept();
 
-
     protected final List<String> negotiableProtocols = new ArrayList<>();
+
     public void addNegotiatedProtocol(String negotiableProtocol) {
         negotiableProtocols.add(negotiableProtocol);
     }
+
     public boolean hasNegotiableProtocols() {
         return (negotiableProtocols.size() > 0);
     }
@@ -621,8 +638,14 @@ public abstract class AbstractEndpoint<S> {
      * Handling of accepted sockets.
      */
     private Handler<S> handler = null;
-    public void setHandler(Handler<S> handler ) { this.handler = handler; }
-    public Handler<S> getHandler() { return handler; }
+
+    public void setHandler(Handler<S> handler ) {
+        this.handler = handler;
+    }
+
+    public Handler<S> getHandler() {
+        return handler;
+    }
 
 
     /**
@@ -879,28 +902,27 @@ public abstract class AbstractEndpoint<S> {
      * processing as if the Poller (for those endpoints that have one)
      * selected the socket.
      *
+     * 取一个线程对象 和 线程池，然后将{@param socketWrapper} 交给线程对象去处理
      * @param socketWrapper The socket wrapper to process
      * @param event         The socket event to be processed
-     * @param dispatch      Should the processing be performed on a new
-     *                          container thread
+     * @param dispatch      Should the processing be performed on a new container thread
      *
      * @return if processing was triggered successfully
      */
-    public boolean processSocket(SocketWrapperBase<S> socketWrapper,
-            SocketEvent event, boolean dispatch) {
+    public boolean processSocket(SocketWrapperBase<S> socketWrapper, SocketEvent event, boolean dispatch) {
         try {
             if (socketWrapper == null) {
                 return false;
             }
-            SocketProcessorBase<S> sc = processorCache.pop();
+            SocketProcessorBase<S> sc = processorCache.pop(); // 取一个线程对象
             if (sc == null) {
                 sc = createSocketProcessor(socketWrapper, event);
             } else {
-                sc.reset(socketWrapper, event);
+                sc.reset(socketWrapper, event); // 刷新对象持有的socket
             }
-            Executor executor = getExecutor();
+            Executor executor = getExecutor(); // 获取线程池
             if (dispatch && executor != null) {
-                executor.execute(sc);
+                executor.execute(sc); // 执行任务
             } else {
                 sc.run();
             }
@@ -918,8 +940,7 @@ public abstract class AbstractEndpoint<S> {
     }
 
 
-    protected abstract SocketProcessorBase<S> createSocketProcessor(
-            SocketWrapperBase<S> socketWrapper, SocketEvent event);
+    protected abstract SocketProcessorBase<S> createSocketProcessor(SocketWrapperBase<S> socketWrapper, SocketEvent event);
 
 
     // ------------------------------------------------------- Lifecycle methods

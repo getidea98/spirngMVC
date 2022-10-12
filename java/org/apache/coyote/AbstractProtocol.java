@@ -46,8 +46,7 @@ import org.apache.tomcat.util.net.SocketEvent;
 import org.apache.tomcat.util.net.SocketWrapperBase;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class AbstractProtocol<S> implements ProtocolHandler,
-        MBeanRegistration {
+public abstract class AbstractProtocol<S> implements ProtocolHandler, MBeanRegistration {
 
     /**
      * The string manager for this package.
@@ -711,8 +710,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
         @Override
         public SocketState process(SocketWrapperBase<S> wrapper, SocketEvent status) {
             if (getLog().isDebugEnabled()) {
-                getLog().debug(sm.getString("abstractConnectionHandler.process",
-                        wrapper.getSocket(), status));
+                getLog().debug(sm.getString("abstractConnectionHandler.process", wrapper.getSocket(), status));
             }
             if (wrapper == null) {
                 // Nothing to do. Socket has been closed.
@@ -778,8 +776,7 @@ public abstract class AbstractProtocol<S> implements ProtocolHandler,
                     register(processor);
                 }
 
-                processor.setSslSupport(
-                        wrapper.getSslSupport(getProtocol().getClientCertProvider()));
+                processor.setSslSupport(wrapper.getSslSupport(getProtocol().getClientCertProvider()));
 
                 // Associate the processor with the connection
                 connections.put(socket, processor);

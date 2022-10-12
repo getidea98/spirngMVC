@@ -54,8 +54,7 @@ final class StandardHostValve extends ValveBase {
     // Saves a call to getClassLoader() on very request. Under high load these
     // calls took just long enough to appear as a hot spot (although a very
     // minor one) in a profiler.
-    private static final ClassLoader MY_CLASSLOADER =
-            StandardHostValve.class.getClassLoader();
+    private static final ClassLoader MY_CLASSLOADER = StandardHostValve.class.getClassLoader();
 
     static final boolean STRICT_SERVLET_COMPLIANCE;
 
@@ -64,8 +63,7 @@ final class StandardHostValve extends ValveBase {
     static {
         STRICT_SERVLET_COMPLIANCE = Globals.STRICT_SERVLET_COMPLIANCE;
 
-        String accessSession = System.getProperty(
-                "org.apache.catalina.core.StandardHostValve.ACCESS_SESSION");
+        String accessSession = System.getProperty("org.apache.catalina.core.StandardHostValve.ACCESS_SESSION");
         if (accessSession == null) {
             ACCESS_SESSION = STRICT_SERVLET_COMPLIANCE;
         } else {
@@ -84,8 +82,7 @@ final class StandardHostValve extends ValveBase {
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-        StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(Constants.Package);
 
 
     // --------------------------------------------------------- Public Methods
@@ -102,8 +99,7 @@ final class StandardHostValve extends ValveBase {
      * @exception ServletException if a servlet error occurred
      */
     @Override
-    public final void invoke(Request request, Response response)
-        throws IOException, ServletException {
+    public final void invoke(Request request, Response response) throws IOException, ServletException {
 
         // Select the Context to be used for this Request
         Context context = request.getContext();
@@ -310,25 +306,17 @@ final class StandardHostValve extends ValveBase {
         if (errorPage != null) {
             if (response.setErrorReported()) {
                 response.setAppCommitted(false);
-                request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR,
-                        errorPage.getLocation());
-                request.setAttribute(Globals.DISPATCHER_TYPE_ATTR,
-                        DispatcherType.ERROR);
-                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE,
-                        Integer.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
-                request.setAttribute(RequestDispatcher.ERROR_MESSAGE,
-                                  throwable.getMessage());
-                request.setAttribute(RequestDispatcher.ERROR_EXCEPTION,
-                                  realError);
+                request.setAttribute(Globals.DISPATCHER_REQUEST_PATH_ATTR, errorPage.getLocation());
+                request.setAttribute(Globals.DISPATCHER_TYPE_ATTR, DispatcherType.ERROR);
+                request.setAttribute(RequestDispatcher.ERROR_STATUS_CODE, Integer.valueOf(HttpServletResponse.SC_INTERNAL_SERVER_ERROR));
+                request.setAttribute(RequestDispatcher.ERROR_MESSAGE, throwable.getMessage());
+                request.setAttribute(RequestDispatcher.ERROR_EXCEPTION, realError);
                 Wrapper wrapper = request.getWrapper();
                 if (wrapper != null) {
-                    request.setAttribute(RequestDispatcher.ERROR_SERVLET_NAME,
-                                      wrapper.getName());
+                    request.setAttribute(RequestDispatcher.ERROR_SERVLET_NAME, wrapper.getName());
                 }
-                request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI,
-                                     request.getRequestURI());
-                request.setAttribute(RequestDispatcher.ERROR_EXCEPTION_TYPE,
-                                  realError.getClass());
+                request.setAttribute(RequestDispatcher.ERROR_REQUEST_URI, request.getRequestURI());
+                request.setAttribute(RequestDispatcher.ERROR_EXCEPTION_TYPE, realError.getClass());
                 if (custom(request, response, errorPage)) {
                     try {
                         response.finishResponse();
@@ -363,8 +351,7 @@ final class StandardHostValve extends ValveBase {
      * @param response The response being generated
      * @param errorPage The errorPage directive we are obeying
      */
-    private boolean custom(Request request, Response response,
-                             ErrorPage errorPage) {
+    private boolean custom(Request request, Response response, ErrorPage errorPage) {
 
         if (container.getLogger().isDebugEnabled()) {
             container.getLogger().debug("Processing " + errorPage);
@@ -372,14 +359,11 @@ final class StandardHostValve extends ValveBase {
 
         try {
             // Forward control to the specified location
-            ServletContext servletContext =
-                request.getContext().getServletContext();
-            RequestDispatcher rd =
-                servletContext.getRequestDispatcher(errorPage.getLocation());
+            ServletContext servletContext = request.getContext().getServletContext();
+            RequestDispatcher rd = servletContext.getRequestDispatcher(errorPage.getLocation());
 
             if (rd == null) {
-                container.getLogger().error(
-                    sm.getString("standardHostValue.customStatusFailed", errorPage.getLocation()));
+                container.getLogger().error(sm.getString("standardHostValue.customStatusFailed", errorPage.getLocation()));
                 return false;
             }
 

@@ -56,8 +56,7 @@ public class Connector extends LifecycleMBeanBase  {
     /**
      * Alternate flag to enable recycling of facades.
      */
-    public static final boolean RECYCLE_FACADES =
-        Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.RECYCLE_FACADES", "false"));
+    public static final boolean RECYCLE_FACADES = Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.RECYCLE_FACADES", "false"));
 
 
     // ------------------------------------------------------------ Constructor
@@ -218,8 +217,7 @@ public class Connector extends LifecycleMBeanBase  {
      * Coyote Protocol handler class name.
      * Defaults to the Coyote HTTP/1.1 protocolHandler.
      */
-    protected String protocolHandlerClassName =
-        "org.apache.coyote.http11.Http11NioProtocol";
+    protected String protocolHandlerClassName = "org.apache.coyote.http11.Http11NioProtocol";
 
 
     /**
@@ -248,6 +246,7 @@ public class Connector extends LifecycleMBeanBase  {
 
 
     protected static final HashMap<String,String> replacements = new HashMap<>();
+
     static {
         replacements.put("acceptCount", "backlog");
         replacements.put("connectionLinger", "soLinger");
@@ -562,8 +561,7 @@ public class Connector extends LifecycleMBeanBase  {
     @Deprecated
     public void setProtocol(String protocol) {
 
-        boolean aprConnector = AprLifecycleListener.isAprAvailable() &&
-                AprLifecycleListener.getUseAprConnector();
+        boolean aprConnector = AprLifecycleListener.isAprAvailable() && AprLifecycleListener.getUseAprConnector();
 
         if ("HTTP/1.1".equals(protocol) || protocol == null) {
             if (aprConnector) {
@@ -967,8 +965,7 @@ public class Connector extends LifecycleMBeanBase  {
         try {
             protocolHandler.init();
         } catch (Exception e) {
-            throw new LifecycleException(
-                    sm.getString("coyoteConnector.protocolHandlerInitializationFailed"), e);
+            throw new LifecycleException(sm.getString("coyoteConnector.protocolHandlerInitializationFailed"), e);
         }
     }
 
@@ -983,8 +980,7 @@ public class Connector extends LifecycleMBeanBase  {
 
         // Validate settings before starting
         if (getPort() < 0) {
-            throw new LifecycleException(sm.getString(
-                    "coyoteConnector.invalidPort", Integer.valueOf(getPort())));
+            throw new LifecycleException(sm.getString("coyoteConnector.invalidPort", Integer.valueOf(getPort())));
         }
 
         setState(LifecycleState.STARTING);
@@ -997,9 +993,7 @@ public class Connector extends LifecycleMBeanBase  {
                 errPrefix += "service.getName(): \"" + this.service.getName() + "\"; ";
             }
 
-            throw new LifecycleException
-                (errPrefix + " " + sm.getString
-                 ("coyoteConnector.protocolHandlerStartFailed"), e);
+            throw new LifecycleException(errPrefix + " " + sm.getString("coyoteConnector.protocolHandlerStartFailed"), e);
         }
     }
 

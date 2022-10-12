@@ -41,6 +41,7 @@ public interface ProtocolHandler {
      * @param adapter The adapter to associate
      */
     public void setAdapter(Adapter adapter);
+
     public Adapter getAdapter();
 
 

@@ -33,8 +33,7 @@ public class TaskThread extends Thread {
         this.creationTime = System.currentTimeMillis();
     }
 
-    public TaskThread(ThreadGroup group, Runnable target, String name,
-            long stackSize) {
+    public TaskThread(ThreadGroup group, Runnable target, String name, long stackSize) {
         super(group, new WrappingRunnable(target), name, stackSize);
         this.creationTime = System.currentTimeMillis();
     }
