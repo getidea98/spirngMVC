@@ -121,7 +121,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SpringMVC</servlet-name>
-        <url-pattern>/SpringMVC</url-pattern>
+        <url-pattern>/SpringMVC/*</url-pattern>
     </servlet-mapping>
 
 
