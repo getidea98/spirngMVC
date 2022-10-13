@@ -67,16 +67,13 @@ final class StandardEngineValve extends ValveBase {
      * @exception ServletException if a servlet error occurred
      */
     @Override
-    public final void invoke(Request request, Response response)
+    public void invoke(Request request, Response response)
         throws IOException, ServletException {
 
         // Select the Host to be used for this Request
         Host host = request.getHost();
         if (host == null) {
-            response.sendError
-                (HttpServletResponse.SC_BAD_REQUEST,
-                 sm.getString("standardEngine.noHost",
-                              request.getServerName()));
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, sm.getString("standardEngine.noHost", request.getServerName()));
             return;
         }
         if (request.isAsyncSupported()) {

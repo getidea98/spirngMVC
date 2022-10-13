@@ -174,6 +174,7 @@ public abstract class AbstractEndpoint<S> {
      * Socket properties
      */
     protected SocketProperties socketProperties = new SocketProperties();
+
     public SocketProperties getSocketProperties() {
         return socketProperties;
     }
@@ -191,15 +192,18 @@ public abstract class AbstractEndpoint<S> {
     // ----------------------------------------------------------------- Properties
 
     private String defaultSSLHostConfigName = SSLHostConfig.DEFAULT_SSL_HOST_NAME;
+
     public String getDefaultSSLHostConfigName() {
         return defaultSSLHostConfigName;
     }
+
     public void setDefaultSSLHostConfigName(String defaultSSLHostConfigName) {
         this.defaultSSLHostConfigName = defaultSSLHostConfigName;
     }
 
 
     protected ConcurrentMap<String,SSLHostConfig> sslHostConfigs = new ConcurrentHashMap<>();
+
     public void addSslHostConfig(SSLHostConfig sslHostConfig) throws IllegalArgumentException {
         String key = sslHostConfig.getHostName();
         if (key == null || key.length() == 0) {
@@ -219,6 +223,7 @@ public abstract class AbstractEndpoint<S> {
             throw new IllegalArgumentException(sm.getString("endpoint.duplicateSslHostName", key));
         }
     }
+
     public SSLHostConfig[] findSslHostConfigs() {
         return sslHostConfigs.values().toArray(new SSLHostConfig[0]);
     }
@@ -275,9 +280,11 @@ public abstract class AbstractEndpoint<S> {
      * Has the user requested that send file be used where possible?
      */
     private boolean useSendfile = true;
+
     public boolean getUseSendfile() {
         return useSendfile;
     }
+
     public void setUseSendfile(boolean useSendfile) {
         this.useSendfile = useSendfile;
     }
@@ -293,8 +300,7 @@ public abstract class AbstractEndpoint<S> {
         return executorTerminationTimeoutMillis;
     }
 
-    public void setExecutorTerminationTimeoutMillis(
-            long executorTerminationTimeoutMillis) {
+    public void setExecutorTerminationTimeoutMillis(long executorTerminationTimeoutMillis) {
         this.executorTerminationTimeoutMillis = executorTerminationTimeoutMillis;
     }
 
@@ -314,13 +320,16 @@ public abstract class AbstractEndpoint<S> {
      * Priority of the acceptor threads.
      */
     protected int acceptorThreadPriority = Thread.NORM_PRIORITY;
+
     public void setAcceptorThreadPriority(int acceptorThreadPriority) {
         this.acceptorThreadPriority = acceptorThreadPriority;
     }
+
     public int getAcceptorThreadPriority() { return acceptorThreadPriority; }
 
 
     private int maxConnections = 10000;
+
     public void setMaxConnections(int maxCon) {
         this.maxConnections = maxCon;
         LimitLatch latch = this.connectionLimitLatch;

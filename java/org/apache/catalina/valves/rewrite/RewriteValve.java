@@ -565,8 +565,7 @@ public class RewriteValve extends ValveBase {
                     // Reinvoke the whole request recursively
                     try {
                         Connector connector = request.getConnector();
-                        if (!connector.getProtocolHandler().getAdapter().prepare(
-                                request.getCoyoteRequest(), response.getCoyoteResponse())) {
+                        if (!connector.getProtocolHandler().getAdapter().prepare(request.getCoyoteRequest(), response.getCoyoteResponse())) {
                             return;
                         }
                         Pipeline pipeline = connector.getService().getContainer().getPipeline();

@@ -29,10 +29,7 @@ import javax.servlet.SessionTrackingMode;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.Authenticator;
-import org.apache.catalina.Context;
-import org.apache.catalina.Host;
-import org.apache.catalina.Wrapper;
+import org.apache.catalina.*;
 import org.apache.catalina.authenticator.AuthenticatorBase;
 import org.apache.catalina.core.AsyncContextImpl;
 import org.apache.catalina.util.ServerInfo;
@@ -72,14 +69,12 @@ public class CoyoteAdapter implements Adapter {
             System.getProperty("java.vm.vendor") + "/" +
             System.getProperty("java.runtime.version") + ")";
 
-    private static final EnumSet<SessionTrackingMode> SSL_ONLY =
-        EnumSet.of(SessionTrackingMode.SSL);
+    private static final EnumSet<SessionTrackingMode> SSL_ONLY = EnumSet.of(SessionTrackingMode.SSL);
 
     public static final int ADAPTER_NOTES = 1;
 
 
-    protected static final boolean ALLOW_BACKSLASH =
-        Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH", "false"));
+    protected static final boolean ALLOW_BACKSLASH = Boolean.parseBoolean(System.getProperty("org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH", "false"));
 
 
     private static final ThreadLocal<String> THREAD_NAME =
@@ -126,8 +121,7 @@ public class CoyoteAdapter implements Adapter {
     // -------------------------------------------------------- Adapter Methods
 
     @Override
-    public boolean asyncDispatch(org.apache.coyote.Request req,
-            org.apache.coyote.Response res, SocketEvent status) throws Exception {
+    public boolean asyncDispatch(org.apache.coyote.Request req, org.apache.coyote.Response res, SocketEvent status) {
         Request request = (Request) req.getNote(ADAPTER_NOTES);
         Response response = (Response) res.getNote(ADAPTER_NOTES);
 
@@ -301,9 +295,7 @@ public class CoyoteAdapter implements Adapter {
      * Service method.
      */
     @Override
-    public void service(org.apache.coyote.Request req,
-                        org.apache.coyote.Response res)
-        throws Exception {
+    public void service(org.apache.coyote.Request req, org.apache.coyote.Response res) throws Exception {
 
         Request request = (Request) req.getNote(ADAPTER_NOTES);
         Response response = (Response) res.getNote(ADAPTER_NOTES);
@@ -325,8 +317,7 @@ public class CoyoteAdapter implements Adapter {
             res.setNote(ADAPTER_NOTES, response);
 
             // Set query string encoding
-            req.getParameters().setQueryStringEncoding
-                (connector.getURIEncoding());
+            req.getParameters().setQueryStringEncoding(connector.getURIEncoding());
 
         }
 
@@ -346,7 +337,11 @@ public class CoyoteAdapter implements Adapter {
                 //check valves if we support async
                 request.setAsyncSupported(connector.getService().getContainer().getPipeline().isAsyncSupported());
                 // Calling the container
-                connector.getService().getContainer().getPipeline().getFirst().invoke(request, response);
+                Service service = connector.getService();
+                Engine container = service.getContainer();
+                Pipeline pipeline = container.getPipeline();
+                Valve first = pipeline.getFirst();
+                first.invoke(request, response);
             }
             if (request.isAsync()) {
                 async = true;
@@ -365,8 +360,7 @@ public class CoyoteAdapter implements Adapter {
                     }
                 }
 
-                Throwable throwable =
-                        (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+                Throwable throwable = (Throwable) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
 
                 // If an async request was started, is not going to end once
                 // this container thread finishes and an error occurred, trigger
@@ -386,8 +380,7 @@ public class CoyoteAdapter implements Adapter {
             if (!async && postParseSuccess) {
                 // Log only if processing was invoked.
                 // If postParseRequest() failed, it has already logged it.
-                request.getMappingData().context.logAccess(request, response,
-                        System.currentTimeMillis() - req.getStartTime(), false);
+                request.getMappingData().context.logAccess(request, response, System.currentTimeMillis() - req.getStartTime(), false);
             }
 
             req.getRequestProcessor().setWorkerThreadName(null);
@@ -404,8 +397,7 @@ public class CoyoteAdapter implements Adapter {
 
 
     @Override
-    public boolean prepare(org.apache.coyote.Request req, org.apache.coyote.Response res)
-            throws IOException, ServletException {
+    public boolean prepare(org.apache.coyote.Request req, org.apache.coyote.Response res) throws IOException, ServletException {
         Request request = (Request) req.getNote(ADAPTER_NOTES);
         Response response = (Response) res.getNote(ADAPTER_NOTES);
 
