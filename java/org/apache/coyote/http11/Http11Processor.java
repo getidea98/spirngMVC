@@ -643,8 +643,7 @@ public class Http11Processor extends AbstractProcessor {
 
 
     @Override
-    public SocketState service(SocketWrapperBase<?> socketWrapper)
-        throws IOException {
+    public SocketState service(SocketWrapperBase<?> socketWrapper) throws IOException {
         RequestInfo rp = request.getRequestProcessor();
         rp.setStage(org.apache.coyote.Constants.STAGE_PARSE);
 
@@ -659,8 +658,7 @@ public class Http11Processor extends AbstractProcessor {
         readComplete = true;
         boolean keptAlive = false;
 
-        while (!getErrorState().isError() && keepAlive && !isAsync() &&
-                upgradeToken == null && !endpoint.isPaused()) {
+        while (!getErrorState().isError() && keepAlive && !isAsync() && upgradeToken == null && !endpoint.isPaused()) {
 
             // Parsing the request header
             try {

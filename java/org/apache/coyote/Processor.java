@@ -62,6 +62,7 @@ public interface Processor {
      *         request, otherwise {@code false}
      */
     boolean isUpgrade();
+
     boolean isAsync();
 
     /**
