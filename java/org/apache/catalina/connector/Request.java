@@ -625,6 +625,7 @@ public class Request implements org.apache.catalina.servlet4preview.http.HttpSer
      * Mapping data.
      */
     protected final MappingData mappingData = new MappingData();
+
     private final ApplicationMapping applicationMapping = new ApplicationMapping(mappingData);
 
     /**

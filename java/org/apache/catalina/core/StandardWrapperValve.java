@@ -47,8 +47,7 @@ import org.apache.tomcat.util.res.StringManager;
  *
  * @author Craig R. McClanahan
  */
-final class StandardWrapperValve
-        extends ValveBase {
+final class StandardWrapperValve extends ValveBase {
 
     //------------------------------------------------------ Constructor
     public StandardWrapperValve() {
@@ -71,8 +70,7 @@ final class StandardWrapperValve
     /**
      * The string manager for this package.
      */
-    private static final StringManager sm =
-            StringManager.getManager(Constants.Package);
+    private static final StringManager sm = StringManager.getManager(Constants.Package);
 
 
     // --------------------------------------------------------- Public Methods
@@ -273,8 +271,7 @@ final class StandardWrapperValve
      * @param exception The exception that occurred (which possibly wraps
      *                  a root cause exception
      */
-    private void exception(Request request, Response response,
-                           Throwable exception) {
+    private void exception(Request request, Response response, Throwable exception) {
         request.setAttribute(RequestDispatcher.ERROR_EXCEPTION, exception);
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setError();

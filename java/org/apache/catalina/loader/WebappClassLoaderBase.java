@@ -120,8 +120,7 @@ import org.apache.tomcat.util.security.PermissionCheck;
  * @author Remy Maucherat
  * @author Craig R. McClanahan
  */
-public abstract class WebappClassLoaderBase extends URLClassLoader
-        implements Lifecycle, InstrumentableClassLoader, WebappProperties, PermissionCheck {
+public abstract class WebappClassLoaderBase extends URLClassLoader implements Lifecycle, InstrumentableClassLoader, WebappProperties, PermissionCheck {
 
     private static final Log log = LogFactory.getLog(WebappClassLoaderBase.class);
 
@@ -141,8 +140,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
         JVM_THREAD_GROUP_NAMES.add("RMI Runtime");
     }
 
-    protected class PrivilegedFindClassByName
-        implements PrivilegedAction<Class<?>> {
+    protected class PrivilegedFindClassByName implements PrivilegedAction<Class<?>> {
 
         protected final String name;
 

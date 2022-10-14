@@ -38,8 +38,11 @@ public class MappingData {
     public boolean jspWildCard = false;
 
     public final MessageBytes contextPath = MessageBytes.newInstance();
+
     public final MessageBytes requestPath = MessageBytes.newInstance();
+
     public final MessageBytes wrapperPath = MessageBytes.newInstance();
+
     public final MessageBytes pathInfo = MessageBytes.newInstance();
 
     public final MessageBytes redirectPath = MessageBytes.newInstance();

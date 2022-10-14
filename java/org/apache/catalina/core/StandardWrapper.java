@@ -74,13 +74,11 @@ import org.apache.tomcat.util.modeler.Util;
  * @author Remy Maucherat
  */
 @SuppressWarnings("deprecation") // SingleThreadModel
-public class StandardWrapper extends ContainerBase
-    implements ServletConfig, Wrapper, NotificationEmitter {
+public class StandardWrapper extends ContainerBase implements ServletConfig, Wrapper, NotificationEmitter {
 
     private static final Log log = LogFactory.getLog( StandardWrapper.class );
 
-    protected static final String[] DEFAULT_SERVLET_METHODS = new String[] {
-                                                    "GET", "HEAD", "POST" };
+    protected static final String[] DEFAULT_SERVLET_METHODS = new String[] {"GET", "HEAD", "POST" };
 
     // ----------------------------------------------------------- Constructors
 
@@ -89,12 +87,10 @@ public class StandardWrapper extends ContainerBase
      * Create a new StandardWrapper component with the default basic Valve.
      */
     public StandardWrapper() {
-
         super();
         swValve=new StandardWrapperValve();
         pipeline.setBasic(swValve);
         broadcaster = new NotificationBroadcasterSupport();
-
     }
 
 
@@ -238,7 +234,9 @@ public class StandardWrapper extends ContainerBase
 
     // To support jmx attributes
     protected StandardWrapperValve swValve;
+
     protected long loadTime=0;
+
     protected int classLoadTime=0;
 
     /**
@@ -266,14 +264,11 @@ public class StandardWrapper extends ContainerBase
      */
     protected static Class<?>[] classType = new Class[]{ServletConfig.class};
 
-    private final ReentrantReadWriteLock parametersLock =
-            new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock parametersLock = new ReentrantReadWriteLock();
 
-    private final ReentrantReadWriteLock mappingsLock =
-            new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock mappingsLock = new ReentrantReadWriteLock();
 
-    private final ReentrantReadWriteLock referencesLock =
-            new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock referencesLock = new ReentrantReadWriteLock();
 
 
     // ------------------------------------------------------------- Properties
@@ -298,9 +293,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public long getAvailable() {
-
-        return (this.available);
-
+        return this.available;
     }
 
 
@@ -315,15 +308,14 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setAvailable(long available) {
-
         long oldAvailable = this.available;
-        if (available > System.currentTimeMillis())
+        if (available > System.currentTimeMillis()) {
             this.available = available;
-        else
+        }
+        else {
             this.available = 0L;
-        support.firePropertyChange("available", Long.valueOf(oldAvailable),
-                                   Long.valueOf(this.available));
-
+        }
+        support.firePropertyChange("available", Long.valueOf(oldAvailable), Long.valueOf(this.available));
     }
 
 
@@ -365,13 +357,9 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setLoadOnStartup(int value) {
-
         int oldLoadOnStartup = this.loadOnStartup;
         this.loadOnStartup = value;
-        support.firePropertyChange("loadOnStartup",
-                                   Integer.valueOf(oldLoadOnStartup),
-                                   Integer.valueOf(this.loadOnStartup));
-
+        support.firePropertyChange("loadOnStartup", Integer.valueOf(oldLoadOnStartup), Integer.valueOf(this.loadOnStartup));
     }
 
 
@@ -385,7 +373,6 @@ public class StandardWrapper extends ContainerBase
      * @param value New load-on-startup value
      */
     public void setLoadOnStartupString(String value) {
-
         try {
             setLoadOnStartup(Integer.parseInt(value));
         } catch (NumberFormatException e) {
@@ -406,9 +393,7 @@ public class StandardWrapper extends ContainerBase
      * thread model servlet is used.
      */
     public int getMaxInstances() {
-
-        return (this.maxInstances);
-
+        return this.maxInstances;
     }
 
 
@@ -419,12 +404,9 @@ public class StandardWrapper extends ContainerBase
      * @param maxInstances New value of maxInstances
      */
     public void setMaxInstances(int maxInstances) {
-
         int oldMaxInstances = this.maxInstances;
         this.maxInstances = maxInstances;
-        support.firePropertyChange("maxInstances", oldMaxInstances,
-                                   this.maxInstances);
-
+        support.firePropertyChange("maxInstances", oldMaxInstances, this.maxInstances);
     }
 
 
@@ -435,17 +417,13 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setParent(Container container) {
-
-        if ((container != null) &&
-            !(container instanceof Context))
-            throw new IllegalArgumentException
-                (sm.getString("standardWrapper.notContext"));
+        if ((container != null) && !(container instanceof Context))
+            throw new IllegalArgumentException(sm.getString("standardWrapper.notContext"));
         if (container instanceof StandardContext) {
             swallowOutput = ((StandardContext)container).getSwallowOutput();
             unloadDelay = ((StandardContext)container).getUnloadDelay();
         }
         super.setParent(container);
-
     }
 
 
@@ -454,9 +432,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public String getRunAs() {
-
-        return (this.runAs);
-
+        return this.runAs;
     }
 
 
@@ -467,11 +443,9 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setRunAs(String runAs) {
-
         String oldRunAs = this.runAs;
         this.runAs = runAs;
         support.firePropertyChange("runAs", oldRunAs, this.runAs);
-
     }
 
 
@@ -480,9 +454,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public String getServletClass() {
-
-        return (this.servletClass);
-
+        return this.servletClass;
     }
 
 
@@ -493,11 +465,9 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void setServletClass(String servletClass) {
-
         String oldServletClass = this.servletClass;
         this.servletClass = servletClass;
-        support.firePropertyChange("servletClass", oldServletClass,
-                                   this.servletClass);
+        support.firePropertyChange("servletClass", oldServletClass, this.servletClass);
         if (Constants.JSP_SERVLET_CLASS.equals(servletClass)) {
             isJspServlet = true;
         }
@@ -514,9 +484,7 @@ public class StandardWrapper extends ContainerBase
      * @param name The new name of this servlet
      */
     public void setServletName(String name) {
-
         setName(name);
-
     }
 
 
@@ -545,17 +513,16 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public boolean isUnavailable() {
-
-        if (!isEnabled())
+        if (!isEnabled()) {
             return true;
-        else if (available == 0L)
+        } else if (available == 0L) {
             return false;
-        else if (available <= System.currentTimeMillis()) {
+        } else if (available <= System.currentTimeMillis()) {
             available = 0L;
             return false;
-        } else
+        } else {
             return true;
-
+        }
     }
 
 
@@ -565,8 +532,7 @@ public class StandardWrapper extends ContainerBase
         instance = loadServlet();
 
         Class<? extends Servlet> servletClazz = instance.getClass();
-        if (!javax.servlet.http.HttpServlet.class.isAssignableFrom(
-                                                        servletClazz)) {
+        if (!javax.servlet.http.HttpServlet.class.isAssignableFrom(servletClazz)) {
             return DEFAULT_SERVLET_METHODS;
         }
 
@@ -589,10 +555,8 @@ public class StandardWrapper extends ContainerBase
                 allow.add("DELETE");
             }
         }
-
         String[] methodNames = new String[allow.size()];
         return allow.toArray(methodNames);
-
     }
 
 
@@ -634,8 +598,9 @@ public class StandardWrapper extends ContainerBase
     public void backgroundProcess() {
         super.backgroundProcess();
 
-        if (!getState().isAvailable())
+        if (!getState().isAvailable()) {
             return;
+        }
 
         if (getServlet() instanceof PeriodicEventListener) {
             ((PeriodicEventListener) getServlet()).periodicEvent();
@@ -657,8 +622,9 @@ public class StandardWrapper extends ContainerBase
         do {
             loops++;
             rootCauseCheck = rootCause.getCause();
-            if (rootCauseCheck != null)
+            if (rootCauseCheck != null) {
                 rootCause = rootCauseCheck;
+            }
         } while (rootCauseCheck != null && (loops < 20));
         return rootCause;
     }
@@ -672,10 +638,7 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void addChild(Container child) {
-
-        throw new IllegalStateException
-            (sm.getString("standardWrapper.notChild"));
-
+        throw new IllegalStateException(sm.getString("standardWrapper.notChild"));
     }
 
 
@@ -687,7 +650,6 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void addInitParameter(String name, String value) {
-
         parametersLock.writeLock().lock();
         try {
             parameters.put(name, value);
@@ -695,7 +657,6 @@ public class StandardWrapper extends ContainerBase
             parametersLock.writeLock().unlock();
         }
         fireContainerEvent("addInitParameter", name);
-
     }
 
 
@@ -706,16 +667,15 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void addMapping(String mapping) {
-
         mappingsLock.writeLock().lock();
         try {
             mappings.add(mapping);
         } finally {
             mappingsLock.writeLock().unlock();
         }
-        if(parent.getState().equals(LifecycleState.STARTED))
+        if(parent.getState().equals(LifecycleState.STARTED)) {
             fireContainerEvent(ADD_MAPPING_EVENT, mapping);
-
+        }
     }
 
 
@@ -728,7 +688,6 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public void addSecurityReference(String name, String link) {
-
         referencesLock.writeLock().lock();
         try {
             references.put(name, link);
@@ -736,7 +695,6 @@ public class StandardWrapper extends ContainerBase
             referencesLock.writeLock().unlock();
         }
         fireContainerEvent("addSecurityReference", name);
-
     }
 
 
@@ -755,7 +713,6 @@ public class StandardWrapper extends ContainerBase
      */
     @Override
     public Servlet allocate() throws ServletException {
-
         // If we are currently unloading this servlet, throw an exception
         if (unloading) {
             throw new ServletException(sm.getString("standardWrapper.unloading", getName()));

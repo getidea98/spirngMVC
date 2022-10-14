@@ -577,8 +577,7 @@ public class CoyoteAdapter implements Adapter {
                 res.setStatus(404);
                 res.setMessage("Not found");
             }
-            connector.getService().getContainer().logAccess(
-                    request, response, 0, true);
+            connector.getService().getContainer().logAccess(request, response, 0, true);
             return false;
         }
 
@@ -608,8 +607,7 @@ public class CoyoteAdapter implements Adapter {
             if (!normalize(req.decodedURI())) {
                 res.setStatus(400);
                 res.setMessage("Invalid URI");
-                connector.getService().getContainer().logAccess(
-                        request, response, 0, true);
+                connector.getService().getContainer().logAccess(request, response, 0, true);
                 return false;
             }
             // Character decoding
@@ -618,8 +616,7 @@ public class CoyoteAdapter implements Adapter {
             if (!checkNormalize(req.decodedURI())) {
                 res.setStatus(400);
                 res.setMessage("Invalid URI character encoding");
-                connector.getService().getContainer().logAccess(
-                        request, response, 0, true);
+                connector.getService().getContainer().logAccess(request, response, 0, true);
                 return false;
             }
         } else {
@@ -636,8 +633,7 @@ public class CoyoteAdapter implements Adapter {
             CharChunk uriCC = decodedURI.getCharChunk();
             int semicolon = uriCC.indexOf(';');
             if (semicolon > 0) {
-                decodedURI.setChars
-                    (uriCC.getBuffer(), uriCC.getStart(), semicolon);
+                decodedURI.setChars(uriCC.getBuffer(), uriCC.getStart(), semicolon);
             }
         }
 
@@ -661,8 +657,7 @@ public class CoyoteAdapter implements Adapter {
 
         while (mapRequired) {
             // This will map the the latest version by default
-            connector.getService().getMapper().map(serverName, decodedURI,
-                    version, request.getMappingData());
+            connector.getService().getMapper().map(serverName, decodedURI, version, request.getMappingData());
 
             // If there is no context at this point, it is likely no ROOT context
             // has been deployed

@@ -30,8 +30,7 @@ import javax.servlet.ServletContext;
  *
  * @author Remy Maucharat
  */
-public final class StandardWrapperFacade
-    implements ServletConfig {
+public final class StandardWrapperFacade implements ServletConfig {
 
 
     // ----------------------------------------------------------- Constructors

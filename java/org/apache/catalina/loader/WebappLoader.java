@@ -60,8 +60,7 @@ import org.apache.tomcat.util.res.StringManager;
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
-public class WebappLoader extends LifecycleMBeanBase
-    implements Loader, PropertyChangeListener {
+public class WebappLoader extends LifecycleMBeanBase implements Loader, PropertyChangeListener {
 
 
     // ----------------------------------------------------------- Constructors
